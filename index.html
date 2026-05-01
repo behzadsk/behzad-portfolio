@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Behzad Saeed – GIS Expert, Spatial Data Scientist & Project Manager. Portfolio of geospatial, ML/AI, and remote sensing projects.">
+    <title>Behzad Saeed | GIS Expert & Spatial Data Scientist</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --primary: #8B5CF6;
+            --primary-dark: #6D28D9;
+            --primary-light: #A78BFA;
+            --secondary: #10B981;
+            --accent: #F59E0B;
+            --bg: #05050F;
+            --bg-card: #0D0D25;
+            --bg-card2: #13133A;
+            --text: #F1F5F9;
+            --text-muted: #94A3B8;
+            --border: rgba(139,92,246,0.25);
+            --glow: 0 0 24px rgba(139,92,246,0.35);
+            --nav-scrolled: rgba(5,5,15,0.94);
+            --mob-menu-bg: rgba(5,5,15,0.98);
+            --canvas-bg1: #05050F;
+            --canvas-bg2: #0A0520;
+        }
+
+        /* ===== LIGHT / COLORED THEME ===== */
+        html.light {
+            --primary: #7C3AED;
+            --primary-dark: #5B21B6;
+            --primary-light: #7C3AED;
+            --secondary: #059669;
+            --accent: #D97706;
+            --bg: #F5F3FF;
+            --bg-card: #FFFFFF;
+            --bg-card2: #EDE9FE;
+            --text: #1E1B4B;
+            --text-muted: #5B5675;
+            --border: rgba(109,40,217,0.22);
+            --glow: 0 4px 24px rgba(109,40,217,0.18);
+            --nav-scrolled: rgba(255,255,255,0.96);
+            --mob-menu-bg: rgba(245,243,255,0.99);
+            --canvas-bg1: #F5F3FF;
+            --canvas-bg2: #EDE9FE;
+        }
+        html.light .hero-name {
+            background:linear-gradient(135deg,#1E1B4B 0%,var(--primary) 50%,var(--secondary) 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+        }
+        html.light nav.scrolled { background:var(--nav-scrolled); box-shadow:0 4px 30px rgba(0,0,0,.12); }
+        html.light .mobile-menu { background:var(--mob-menu-bg); }
+        html.light .mobile-menu a { color:var(--text); }
+        html.light #loader { background:var(--bg); }
+        html.light .loader-logo { color:var(--primary); }
+        html.light .tl-dot { border-color:var(--bg-card); }
+        html.light .timeline::before { background:linear-gradient(180deg,var(--primary),var(--secondary),rgba(109,40,217,0)); }
+        html.light .sbar-track { background:rgba(109,40,217,0.1); }
+        html.light .hero-badge { background:rgba(109,40,217,0.1); }
+        html.light .section-tag { background:rgba(109,40,217,0.08); }
+        html.light .proj-card::before { background:linear-gradient(90deg,var(--primary),var(--secondary)); }
+        html.light .edu-card::after { background:linear-gradient(90deg,var(--primary),var(--secondary)); }
+        html.light .tag { background:rgba(109,40,217,0.09); }
+        html.light .tag:hover { background:rgba(109,40,217,0.22); }
+        html.light .tool-pill { background:rgba(109,40,217,0.09); border-color:rgba(109,40,217,0.2); }
+        html.light .tool-pill:hover { background:rgba(109,40,217,0.22); }
+        html.light .proj-tag { background:rgba(109,40,217,0.08); border-color:rgba(109,40,217,0.18); }
+        html.light .filt-btn { border-color:rgba(109,40,217,0.25); color:var(--text-muted); }
+        html.light .filt-btn.active, html.light .filt-btn:hover { background:var(--primary); border-color:var(--primary); color:#fff; }
+        html.light .roles-scroll { background:rgba(109,40,217,0.08); }
+        html.light .role-chip { background:rgba(109,40,217,0.12); color:var(--primary); border-color:rgba(109,40,217,0.25); }
+
+        /* ===== THEME TOGGLE BUTTON ===== */
+        .theme-btn {
+            width:38px; height:38px; border-radius:50%; border:1.5px solid var(--border);
+            background:var(--bg-card2); color:var(--primary-light); cursor:pointer;
+            display:flex; align-items:center; justify-content:center; font-size:.95rem;
+            transition:all .3s; flex-shrink:0;
+        }
+        .theme-btn:hover { background:var(--primary); color:#fff; border-color:var(--primary); transform:rotate(20deg) scale(1.1); }
+        html.light .theme-btn { color:var(--primary); }
+
+        /* ===== OPEN ROLES STRIP ===== */
+        .roles-strip {
+            display:flex; flex-wrap:wrap; gap:.5rem; justify-content:center;
+            margin-bottom:2rem; animation:fadeUp .8s ease .75s both;
+        }
+        .role-chip {
+            display:inline-flex; align-items:center; gap:.35rem;
+            background:rgba(139,92,246,.1); border:1px solid var(--border);
+            color:var(--primary-light); padding:.28rem .85rem; border-radius:50px;
+            font-size:.76rem; font-weight:600; letter-spacing:.4px; transition:all .3s;
+        }
+        .role-chip:hover { background:var(--primary); color:#fff; transform:translateY(-2px); }
+        .role-chip i { font-size:.7rem; color:var(--secondary); }
+
+        /* ===== RESET ===== */
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; scrollbar-width:thin; scrollbar-color:var(--primary) var(--bg); }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; line-height:1.6; }
+        ::-webkit-scrollbar { width:6px; }
+        ::-webkit-scrollbar-track { background:var(--bg); }
+        ::-webkit-scrollbar-thumb { background:var(--primary); border-radius:3px; }
+        img { max-width:100%; display:block; }
+        a { text-decoration:none; }
+
+        /* ===== LOADING SCREEN ===== */
+        #loader {
+            position:fixed; inset:0; background:var(--bg); z-index:9999;
+            display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.5rem;
+            transition:opacity .5s ease;
+        }
+        .loader-logo { font-family:'Orbitron',sans-serif; font-size:2.5rem; font-weight:900; color:var(--primary-light); letter-spacing:4px; }
+        .loader-track { width:220px; height:3px; background:rgba(139,92,246,.15); border-radius:3px; overflow:hidden; }
+        .loader-bar { height:100%; background:linear-gradient(90deg,var(--primary),var(--secondary)); border-radius:3px; animation:loadbar 1.6s ease forwards; }
+        @keyframes loadbar { from{width:0} to{width:100%} }
+        .loader-label { font-size:.8rem; letter-spacing:4px; color:var(--text-muted); }
+
+        /* ===== NAVIGATION ===== */
+        nav {
+            position:fixed; top:0; width:100%; z-index:1000;
+            padding:1.1rem 2.5rem; display:flex; justify-content:space-between; align-items:center;
+            transition:all .35s ease;
+        }
+        nav.scrolled {
+            background:var(--nav-scrolled); backdrop-filter:blur(20px);
+            border-bottom:1px solid var(--border); box-shadow:0 4px 30px rgba(0,0,0,.5);
+            padding:.8rem 2.5rem;
+        }
+        .nav-logo {
+            font-family:'Orbitron',sans-serif; font-size:1.1rem; font-weight:900;
+            color:var(--primary-light); letter-spacing:1px; white-space:nowrap;
+        }
+        .nav-logo span { color:var(--secondary); }
+        .nav-right { display:flex; align-items:center; gap:.9rem; }
+        .nav-links { display:flex; list-style:none; gap:1.8rem; }
+        .nav-links a {
+            color:var(--text-muted); font-size:.875rem; font-weight:500; letter-spacing:.5px;
+            position:relative; transition:color .3s;
+        }
+        .nav-links a::after {
+            content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px;
+            background:var(--primary); border-radius:2px; transition:width .3s;
+        }
+        .nav-links a:hover { color:var(--primary-light); }
+        .nav-links a:hover::after { width:100%; }
+        .hamburger { display:none; flex-direction:column; cursor:pointer; gap:5px; }
+        .hamburger span { width:26px; height:2px; background:var(--primary-light); transition:all .3s; display:block; }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display:none; position:fixed; inset:0; background:var(--mob-menu-bg);
+            z-index:998; flex-direction:column; align-items:center; justify-content:center; gap:2rem;
+        }
+        .mobile-menu.open { display:flex; }
+        .mobile-menu a { font-family:'Rajdhani',sans-serif; font-size:2rem; font-weight:700; color:var(--text); transition:color .3s; }
+        .mobile-menu a:hover { color:var(--primary-light); }
+        .close-menu { position:absolute; top:1.5rem; right:2rem; background:none; border:none; color:var(--primary-light); font-size:1.5rem; cursor:pointer; }
+
+        /* ===== HERO ===== */
+        #hero { min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+        #hero-canvas { position:absolute; inset:0; width:100%; height:100%; }
+        .hero-inner {
+            position:relative; z-index:10; text-align:center; padding:2rem;
+            display:flex; flex-direction:column; align-items:center;
+        }
+        .hero-badge {
+            display:inline-flex; align-items:center; gap:.6rem;
+            background:rgba(139,92,246,.12); border:1px solid var(--border);
+            border-radius:50px; padding:.4rem 1.2rem; font-size:.82rem; color:var(--primary-light);
+            margin-bottom:1.8rem; animation:fadeUp .8s ease both;
+        }
+        .badge-dot { width:8px; height:8px; background:var(--secondary); border-radius:50%; animation:pulse-dot 2s infinite; }
+        @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+        .hero-name {
+            font-family:'Orbitron',sans-serif;
+            font-size:clamp(2.4rem,7vw,5.5rem); font-weight:900; line-height:1.05; margin-bottom:.6rem;
+            background:linear-gradient(135deg,#fff 0%,var(--primary-light) 45%,var(--secondary) 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+            animation:fadeUp .8s ease .15s both;
+        }
+        .hero-subtitle {
+            font-family:'Rajdhani',sans-serif; font-size:clamp(1.1rem,3vw,1.7rem);
+            font-weight:500; color:var(--text-muted); margin-bottom:1.2rem;
+            animation:fadeUp .8s ease .3s both;
+        }
+        .hero-subtitle span { color:var(--primary-light); }
+        #typed-wrap {
+            font-family:'Rajdhani',sans-serif; font-size:clamp(1rem,2.5vw,1.3rem);
+            color:var(--secondary); min-height:2rem; margin-bottom:2.2rem;
+            animation:fadeUp .8s ease .45s both;
+        }
+        .hero-cta { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; animation:fadeUp .8s ease .6s both; }
+
+        /* Buttons */
+        .btn { display:inline-flex; align-items:center; gap:.5rem; padding:.8rem 2rem; border-radius:50px; font-weight:600; font-size:.95rem; transition:all .3s; cursor:pointer; border:none; font-family:'Inter',sans-serif; }
+        .btn-solid { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#fff; box-shadow:0 4px 20px rgba(139,92,246,.4); }
+        .btn-solid:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(139,92,246,.6); }
+        .btn-outline { background:transparent; color:var(--primary-light); border:2px solid var(--primary); }
+        .btn-outline:hover { background:rgba(139,92,246,.12); transform:translateY(-3px); }
+
+        .scroll-hint {
+            position:absolute; bottom:2rem; left:50%; transform:translateX(-50%);
+            display:flex; flex-direction:column; align-items:center; gap:.4rem;
+            color:var(--text-muted); font-size:.78rem; letter-spacing:2px;
+            animation:bounce-y 2s infinite;
+        }
+        @keyframes bounce-y { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(-10px)} }
+
+        /* ===== SECTION SHARED ===== */
+        section { padding:6rem 0; }
+        .container { max-width:1200px; margin:0 auto; padding:0 2rem; }
+        .section-header { text-align:center; margin-bottom:4rem; }
+        .section-tag {
+            display:inline-block; background:rgba(139,92,246,.08); border:1px solid var(--border);
+            color:var(--primary-light); padding:.3rem 1rem; border-radius:50px;
+            font-size:.75rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:1rem;
+        }
+        .section-title { font-family:'Orbitron',sans-serif; font-size:clamp(1.7rem,4vw,2.6rem); font-weight:700; margin-bottom:1rem; }
+        .section-title span { color:var(--primary-light); }
+        .section-line { width:60px; height:3px; background:linear-gradient(90deg,var(--primary),var(--secondary)); margin:0 auto; border-radius:3px; }
+
+        /* Scroll Reveal */
+        .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+        .reveal.vis { opacity:1; transform:translateY(0); }
+
+        /* ===== ABOUT ===== */
+        #about { background:linear-gradient(180deg,var(--bg) 0%,var(--bg-card) 100%); }
+        .about-grid { display:grid; grid-template-columns:1fr 1.8fr; gap:4rem; align-items:start; }
+        .about-photo-wrap { position:relative; }
+        .about-photo-frame {
+            width:100%; aspect-ratio:3/4; border-radius:20px; overflow:hidden;
+            border:2px solid var(--border); background:var(--bg-card2);
+            display:flex; align-items:center; justify-content:center;
+        }
+        .about-photo-frame img { width:100%; height:100%; object-fit:cover; object-position:top; }
+        .photo-placeholder { display:flex; flex-direction:column; align-items:center; gap:.75rem; color:var(--text-muted); }
+        .photo-placeholder i { font-size:4rem; color:var(--primary); }
+        .photo-placeholder p { font-size:.8rem; }
+        .about-glow-frame {
+            position:absolute; inset:0; border-radius:20px;
+            border:2px solid var(--primary); transform:translate(10px,10px);
+            z-index:-1; opacity:.25;
+        }
+        .about-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; margin-top:1.2rem; }
+        .stat-box { background:var(--bg-card2); border:1px solid var(--border); border-radius:12px; padding:.9rem; text-align:center; }
+        .stat-num { font-family:'Orbitron',sans-serif; font-size:1.7rem; font-weight:900; color:var(--primary-light); }
+        .stat-lbl { font-size:.72rem; color:var(--text-muted); margin-top:.2rem; }
+        .about-text h3 { font-family:'Rajdhani',sans-serif; font-size:1.7rem; font-weight:700; color:var(--primary-light); margin-bottom:1rem; }
+        .about-text p { color:var(--text-muted); margin-bottom:1.2rem; font-size:.97rem; line-height:1.8; }
+        .tag-cloud { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1.2rem; }
+        .tag { background:rgba(139,92,246,.09); border:1px solid var(--border); color:var(--primary-light); padding:.35rem .9rem; border-radius:50px; font-size:.82rem; transition:all .3s; }
+        .tag:hover { background:rgba(139,92,246,.28); transform:translateY(-2px); }
+
+        /* ===== EXPERIENCE ===== */
+        #experience { background:var(--bg-card); }
+        .timeline { position:relative; padding-left:2rem; }
+        .timeline::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:linear-gradient(180deg,var(--primary),var(--secondary),transparent); }
+        .tl-item { position:relative; margin-bottom:2.8rem; padding-left:2rem; opacity:0; transform:translateX(-25px); transition:all .6s ease; }
+        .tl-item.vis { opacity:1; transform:translateX(0); }
+        .tl-dot { position:absolute; left:-2.45rem; top:.55rem; width:14px; height:14px; border-radius:50%; background:var(--primary); border:3px solid var(--bg-card); box-shadow:0 0 10px var(--primary); }
+        .tl-date { font-size:.75rem; color:var(--secondary); font-weight:600; letter-spacing:2px; text-transform:uppercase; margin-bottom:.4rem; }
+        .tl-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:1.5rem; transition:all .3s; }
+        .tl-card:hover { border-color:var(--primary); box-shadow:var(--glow); transform:translateY(-3px); }
+        .tl-title { font-family:'Rajdhani',sans-serif; font-size:1.25rem; font-weight:700; color:var(--primary-light); margin-bottom:.2rem; }
+        .tl-company { font-size:.87rem; color:var(--secondary); margin-bottom:.9rem; }
+        .tl-desc { color:var(--text-muted); font-size:.88rem; line-height:1.75; }
+
+        /* ===== SKILLS ===== */
+        #skills { background:linear-gradient(180deg,var(--bg-card) 0%,var(--bg) 100%); }
+        .skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2rem; }
+        .skill-cat { background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:2rem; transition:all .3s; }
+        .skill-cat:hover { border-color:var(--primary); box-shadow:var(--glow); }
+        .skill-cat-head { display:flex; align-items:center; gap:.75rem; font-family:'Rajdhani',sans-serif; font-size:1.05rem; font-weight:700; color:var(--primary-light); margin-bottom:1.5rem; }
+        .skill-cat-head i { color:var(--secondary); font-size:1.1rem; }
+        .sbar-item { margin-bottom:.9rem; }
+        .sbar-row { display:flex; justify-content:space-between; margin-bottom:.3rem; }
+        .sbar-name { font-size:.83rem; color:var(--text); }
+        .sbar-pct { font-size:.78rem; color:var(--primary-light); }
+        .sbar-track { height:6px; background:rgba(139,92,246,.12); border-radius:3px; overflow:hidden; }
+        .sbar-fill { height:100%; background:linear-gradient(90deg,var(--primary),var(--secondary)); border-radius:3px; width:0; transition:width 1.4s ease; }
+        .tool-cloud { display:flex; flex-wrap:wrap; gap:.5rem; }
+        .tool-pill { background:rgba(139,92,246,.09); border:1px solid rgba(139,92,246,.25); color:var(--primary-light); padding:.28rem .75rem; border-radius:6px; font-size:.78rem; transition:all .3s; }
+        .tool-pill:hover { background:rgba(139,92,246,.28); transform:translateY(-2px); }
+        .soft-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:.6rem; }
+        .soft-item { display:flex; align-items:center; gap:.5rem; font-size:.82rem; color:var(--text-muted); }
+        .soft-item i { color:var(--secondary); font-size:.65rem; }
+
+        /* ===== PROJECTS ===== */
+        #projects { background:var(--bg); }
+        .filter-bar { display:flex; justify-content:center; gap:.7rem; flex-wrap:wrap; margin-bottom:3rem; }
+        .filt-btn { padding:.45rem 1.4rem; border-radius:50px; border:2px solid var(--border); background:transparent; color:var(--text-muted); font-size:.83rem; cursor:pointer; transition:all .3s; font-family:'Inter',sans-serif; }
+        .filt-btn.active, .filt-btn:hover { background:var(--primary); border-color:var(--primary); color:#fff; box-shadow:0 4px 15px rgba(139,92,246,.4); }
+        .projects-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:1.5rem; }
+        .proj-card {
+            background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:1.5rem;
+            transition:all .35s; cursor:default; position:relative; overflow:hidden;
+        }
+        .proj-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--primary),var(--secondary)); opacity:0; transition:opacity .3s; }
+        .proj-card:hover { transform:translateY(-8px); border-color:var(--primary); box-shadow:0 20px 40px rgba(0,0,0,.4),var(--glow); }
+        .proj-card:hover::before { opacity:1; }
+        .proj-card.hide { display:none; }
+        .proj-img-wrap { width:100%; height:170px; border-radius:10px; overflow:hidden; margin-bottom:1rem; background:var(--bg-card); border:1px solid var(--border); }
+        .proj-img { width:100%; height:100%; object-fit:cover; transition:transform .5s ease; display:block; }
+        .proj-card:hover .proj-img { transform:scale(1.06); }
+        .proj-ico { width:46px; height:46px; border-radius:12px; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); display:flex; align-items:center; justify-content:center; font-size:1.2rem; color:#fff; margin-bottom:.9rem; }
+        .proj-cat { font-size:.72rem; color:var(--secondary); letter-spacing:2px; text-transform:uppercase; margin-bottom:.4rem; }
+        .proj-title { font-family:'Rajdhani',sans-serif; font-size:1.05rem; font-weight:700; color:var(--text); margin-bottom:.6rem; line-height:1.4; }
+        .proj-desc { font-size:.83rem; color:var(--text-muted); line-height:1.65; margin-bottom:.9rem; }
+        .proj-tags { display:flex; flex-wrap:wrap; gap:.35rem; }
+        .proj-tag { font-size:.68rem; padding:.18rem .55rem; border-radius:4px; background:rgba(139,92,246,.09); color:var(--primary-light); border:1px solid rgba(139,92,246,.2); }
+
+        /* ===== MAP ===== */
+        #map-section { background:var(--bg-card); }
+        #proj-map { height:500px; border-radius:16px; border:1px solid var(--border); overflow:hidden; box-shadow:var(--glow); }
+        .leaflet-popup-content-wrapper { background:var(--bg-card2) !important; color:var(--text) !important; border:1px solid var(--border) !important; border-radius:12px !important; box-shadow:0 8px 24px rgba(0,0,0,.5) !important; }
+        .leaflet-popup-tip { background:var(--bg-card2) !important; }
+        .leaflet-popup-content { margin:12px 16px !important; }
+        .pop-title { font-family:'Rajdhani',sans-serif; font-size:1rem; font-weight:700; color:var(--primary-light); margin-bottom:.4rem; }
+        .pop-list { font-size:.78rem; color:var(--text-muted); padding-left:1rem; }
+        .pop-list li { margin-bottom:.2rem; }
+
+        /* ===== EDUCATION ===== */
+        #education { background:var(--bg); }
+        .edu-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2rem; }
+        .edu-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:2rem; transition:all .3s; position:relative; overflow:hidden; }
+        .edu-card::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--primary),var(--secondary)); }
+        .edu-card:hover { transform:translateY(-5px); border-color:var(--primary); box-shadow:var(--glow); }
+        .edu-year { font-size:.75rem; color:var(--secondary); letter-spacing:2px; text-transform:uppercase; margin-bottom:.6rem; }
+        .edu-degree { font-family:'Rajdhani',sans-serif; font-size:1.15rem; font-weight:700; color:var(--primary-light); margin-bottom:.4rem; }
+        .edu-inst { font-size:.87rem; color:var(--text-muted); margin-bottom:.9rem; }
+        .edu-detail { font-size:.83rem; color:var(--text-muted); line-height:1.65; }
+        .edu-badge { display:inline-block; background:linear-gradient(135deg,var(--primary),var(--secondary)); color:#fff; padding:.28rem .8rem; border-radius:50px; font-size:.78rem; font-weight:700; margin-top:.9rem; }
+
+        /* ===== CERTIFICATIONS ===== */
+        #certifications { background:var(--bg-card); }
+        .certs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:1.2rem; }
+        .cert-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:12px; padding:1.3rem; display:flex; gap:.9rem; align-items:flex-start; transition:all .3s; }
+        .cert-card:hover { border-color:var(--primary); transform:translateY(-3px); box-shadow:var(--glow); }
+        .cert-ico { width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,var(--primary),var(--primary-dark)); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#fff; font-size:.95rem; }
+        .cert-title { font-size:.87rem; font-weight:600; color:var(--text); margin-bottom:.2rem; line-height:1.4; }
+        .cert-org { font-size:.78rem; color:var(--secondary); }
+
+        /* ===== ACTIVITIES ===== */
+        #activities { background:var(--bg); }
+        .act-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:2rem; }
+        .act-card { background:var(--bg-card2); border:1px solid var(--border); border-radius:16px; padding:2rem; text-align:center; transition:all .3s; }
+        .act-card:hover { border-color:var(--primary); box-shadow:var(--glow); transform:translateY(-5px); }
+        .act-ico { font-size:2.2rem; color:var(--primary-light); margin-bottom:.9rem; }
+        .act-title { font-family:'Rajdhani',sans-serif; font-size:1.05rem; font-weight:700; color:var(--text); margin-bottom:.6rem; }
+        .act-desc { font-size:.83rem; color:var(--text-muted); line-height:1.65; }
+
+        /* ===== REFERENCES ===== */
+        #references { background:var(--bg-card); padding:4rem 0; }
+
+        /* ===== CONTACT ===== */
+        #contact { background:linear-gradient(180deg,var(--bg-card) 0%,var(--bg) 100%); }
+        .contact-grid { display:grid; grid-template-columns:1fr 1.4fr; gap:4rem; }
+        .contact-info h3 { font-family:'Rajdhani',sans-serif; font-size:1.5rem; font-weight:700; color:var(--primary-light); margin-bottom:.8rem; }
+        .contact-info p { color:var(--text-muted); margin-bottom:1.8rem; line-height:1.75; }
+        .contact-links { display:flex; flex-direction:column; gap:.9rem; }
+        .clink { display:flex; align-items:center; gap:1rem; padding:1rem; background:var(--bg-card2); border:1px solid var(--border); border-radius:12px; color:var(--text); transition:all .3s; }
+        .clink:hover { border-color:var(--primary); transform:translateX(5px); box-shadow:var(--glow); }
+        .clink i { font-size:1.1rem; color:var(--primary-light); width:22px; text-align:center; }
+        .clink-label { font-size:.78rem; color:var(--text-muted); }
+        .clink-val { font-size:.9rem; font-weight:500; }
+        .contact-form { display:flex; flex-direction:column; gap:1.3rem; }
+        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+        .form-grp { display:flex; flex-direction:column; gap:.4rem; }
+        .form-grp label { font-size:.82rem; color:var(--text-muted); font-weight:500; }
+        .form-grp input, .form-grp textarea {
+            background:var(--bg-card2); border:1px solid var(--border); border-radius:10px;
+            padding:.85rem 1rem; color:var(--text); font-family:'Inter',sans-serif; font-size:.9rem;
+            transition:all .3s; outline:none;
+        }
+        .form-grp input:focus, .form-grp textarea:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(139,92,246,.12); }
+        .form-grp textarea { resize:vertical; min-height:115px; }
+
+        /* ===== FOOTER ===== */
+        footer { background:var(--bg-card); border-top:1px solid var(--border); padding:2.5rem 2rem; text-align:center; }
+        .footer-socials { display:flex; justify-content:center; gap:.9rem; margin-bottom:1.4rem; }
+        .soc-link { width:42px; height:42px; border-radius:50%; background:var(--bg-card2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--text-muted); transition:all .3s; font-size:.95rem; }
+        .soc-link:hover { background:var(--primary); border-color:var(--primary); color:#fff; transform:translateY(-3px); box-shadow:0 8px 20px rgba(139,92,246,.4); }
+        .footer-txt { color:var(--text-muted); font-size:.83rem; }
+        .footer-txt span { color:var(--primary-light); }
+
+        /* ===== BACK TO TOP ===== */
+        .btt { position:fixed; bottom:2rem; right:2rem; width:42px; height:42px; border-radius:50%; background:var(--primary); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; border:none; font-size:.95rem; opacity:0; pointer-events:none; transition:all .3s; box-shadow:0 4px 15px rgba(139,92,246,.45); z-index:200; }
+        .btt.show { opacity:1; pointer-events:all; }
+        .btt:hover { transform:translateY(-3px); box-shadow:0 8px 25px rgba(139,92,246,.65); }
+
+        /* ===== KEYFRAMES ===== */
+        @keyframes fadeUp { from{opacity:0;transform:translateY(25px)} to{opacity:1;transform:translateY(0)} }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width:1024px) {
+            .about-grid { grid-template-columns:1fr; }
+            .about-photo-wrap { max-width:280px; margin:0 auto; }
+            .contact-grid { grid-template-columns:1fr; }
+        }
+        @media (max-width:768px) {
+            .nav-links { display:none; }
+            .hamburger { display:flex; }
+            .form-row { grid-template-columns:1fr; }
+            #proj-map { height:350px; }
+            nav { padding:1rem 1.5rem; }
+            nav.scrolled { padding:.75rem 1.5rem; }
+        }
+        @media (max-width:480px) {
+            section { padding:4rem 0; }
+            .about-stats { grid-template-columns:repeat(3,1fr); }
+            .stat-num { font-size:1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== LOADER ===== -->
+<div id="loader">
+    <div class="loader-logo">BS.</div>
+    <div class="loader-track"><div class="loader-bar"></div></div>
+    <div class="loader-label">LOADING PORTFOLIO...</div>
+</div>
+
+<!-- ===== BACK TO TOP ===== -->
+<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
+
+<!-- ===== MOBILE MENU ===== -->
+<div class="mobile-menu" id="mobMenu">
+    <button class="close-menu" onclick="toggleMenu()"><i class="fas fa-times"></i></button>
+    <a href="#about" onclick="toggleMenu()">About</a>
+    <a href="#experience" onclick="toggleMenu()">Experience</a>
+    <a href="#skills" onclick="toggleMenu()">Skills</a>
+    <a href="#projects" onclick="toggleMenu()">Projects</a>
+    <a href="#map-section" onclick="toggleMenu()">Map</a>
+    <a href="#education" onclick="toggleMenu()">Education</a>
+    <a href="#certifications" onclick="toggleMenu()">Certs</a>
+    <a href="#contact" onclick="toggleMenu()">Contact</a>
+</div>
+
+<!-- ===== NAV ===== -->
+<nav id="nav">
+    <a href="#hero" class="nav-logo">Behzad <span>Saeed</span></a>
+    <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#map-section">Map</a></li>
+        <li><a href="#education">Education</a></li>
+        <li><a href="#certifications">Certs</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+        <button class="theme-btn" id="themeBtn" title="Toggle theme" onclick="toggleTheme()">
+            <i class="fas fa-moon" id="themeIcon"></i>
+        </button>
+        <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-inner">
+        <div class="hero-badge"><span class="badge-dot"></span>Open for New Roles &amp; Consulting</div>
+        <h1 class="hero-name">BEHZAD SAEED</h1>
+        <p class="hero-subtitle">GIS Expert &nbsp;·&nbsp; Spatial Data Scientist &nbsp;·&nbsp; <span>Project Manager</span></p>
+        <div id="typed-wrap"><span id="typed"></span><span class="cursor" style="color:var(--secondary);animation:pulse-dot 1s infinite;">|</span></div>
+        <div class="roles-strip">
+            <span class="role-chip"><i class="fas fa-circle"></i>GIS/RS Consulting</span>
+            <span class="role-chip"><i class="fas fa-circle"></i>GIS/RS Contractor</span>
+            <span class="role-chip"><i class="fas fa-circle"></i>GIS/RS Counselor</span>
+            <span class="role-chip"><i class="fas fa-circle"></i>Project Manager</span>
+            <span class="role-chip"><i class="fas fa-circle"></i>GIS Manager</span>
+        </div>
+        <div class="hero-cta">
+            <a href="#projects" class="btn btn-solid"><i class="fas fa-map-marked-alt"></i> View Projects</a>
+            <a href="#contact" class="btn btn-outline"><i class="fas fa-envelope"></i> Get in Touch</a>
+        </div>
+    </div>
+    <div class="scroll-hint"><span>SCROLL</span><i class="fas fa-chevron-down"></i></div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">WHO I AM</div>
+            <h2 class="section-title">About <span>Me</span></h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="about-grid">
+            <div class="about-photo-wrap reveal">
+                <div class="about-photo-frame" id="profile-frame">
+                    <img src="Behzad Picture.jpeg" alt="Behzad Saeed" onerror="this.style.display='none';document.getElementById('photo-fallback').style.display='flex';">
+                    <div class="photo-placeholder" id="photo-fallback" style="display:none;">
+                        <i class="fas fa-user-circle"></i>
+                        <p>Photo loading...</p>
+                    </div>
+                </div>
+                <div class="about-glow-frame"></div>
+                <div class="about-stats">
+                    <div class="stat-box"><div class="stat-num" data-target="4">0</div><div class="stat-lbl">Years Exp</div></div>
+                    <div class="stat-box"><div class="stat-num" data-target="30">0</div><div class="stat-lbl">Projects</div></div>
+                    <div class="stat-box"><div class="stat-num" data-target="21">0</div><div class="stat-lbl">Team Led</div></div>
+                </div>
+            </div>
+            <div class="about-text reveal">
+                <h3>GIS Expert · Spatial Data Scientist · Project Manager</h3>
+                <p>Highly accomplished GIS Expert and Project Coordinator with over 4 years of experience in advanced spatial data analysis, visualization, and technical leadership. Currently serving as Project Coordinator at Metavystic Private Limited, Rawalpindi, directing end-to-end geospatial and remote sensing project lifecycles.</p>
+                <p>I specialize in driving automation within geospatial technologies by integrating Machine Learning and AI — Random Forest, SVM, CNN — into complex spatial workflows. My expertise extends to full-stack Web GIS development, automated web scraping using Playwright and Python, UI/UX prototyping in Figma, and the creation of custom QGIS plugins and ArcPy tools.</p>
+                <p>With a strong Geomatics background (CGPA 3.85, 2nd position in class) and a proven track record in large-scale digitization, geospatial data enrichment, and environmental modeling, I bridge sophisticated spatial engineering with strategic project management.</p>
+                <a href="Behzad Saeed Resume New.pdf" download class="btn btn-solid" style="margin-top:.8rem; display:inline-flex;">
+                    <i class="fas fa-download"></i> Download Resume
+                </a>
+                <div class="tag-cloud">
+                    <span class="tag">GIS &amp; Remote Sensing</span>
+                    <span class="tag">Machine Learning</span>
+                    <span class="tag">Web GIS</span>
+                    <span class="tag">Python &amp; R</span>
+                    <span class="tag">Project Management</span>
+                    <span class="tag">Drone Mapping</span>
+                    <span class="tag">Google Earth Engine</span>
+                    <span class="tag">Spatial AI</span>
+                    <span class="tag">QA/QC</span>
+                    <span class="tag">Figma UI/UX</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== EXPERIENCE ===== -->
+<section id="experience">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">CAREER PATH</div>
+            <h2 class="section-title">Work <span>Experience</span></h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="timeline">
+
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-date"><i class="fas fa-circle" style="font-size:.5rem;color:var(--secondary);margin-right:6px;"></i>JAN 2026 – PRESENT</div>
+                <div class="tl-card">
+                    <div class="tl-title">Project Coordinator (GIS/RS)</div>
+                    <div class="tl-company"><i class="fas fa-building" style="margin-right:6px;"></i>Metavystic Private Limited — Rawalpindi</div>
+                    <div class="tl-desc">Directing end-to-end lifecycle of multiple concurrent Geospatial and Remote Sensing projects. Primary liaison between technical teams and corporate clients, translating complex business requirements into actionable GIS workflows. Designed and implemented automated web scraping pipelines using Playwright and Python for large-scale geospatial data extraction — POI enrichment, real estate aggregation. Rigorous QA/QC on spatial datasets through deduplication, cross-validation, and systematic audits. Leveraging Figma for UI/UX prototyping and stakeholder presentations.</div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-date"><i class="fas fa-circle" style="font-size:.5rem;color:var(--secondary);margin-right:6px;"></i>AUG 2025 – PRESENT</div>
+                <div class="tl-card">
+                    <div class="tl-title">Visiting Lecturer (Graduate &amp; Postgraduate Studies)</div>
+                    <div class="tl-company"><i class="fas fa-university" style="margin-right:6px;"></i>Brains Institute Peshawar — Khyber Pakhtunkhwa</div>
+                    <div class="tl-desc">Delivering graduate and postgraduate courses in GIS and Remote Sensing. Designed curriculum covering spatial databases, advanced geospatial analysis, and hands-on training with industry-standard platforms. Mentoring applied research projects — currently supervising 5 students, previously supervised 8. Subjects: Spatial Databases | Geospatial Software Hands-on Training.</div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-date"><i class="fas fa-circle" style="font-size:.5rem;color:var(--secondary);margin-right:6px;"></i>OCT 2025 – JAN 2026</div>
+                <div class="tl-card">
+                    <div class="tl-title">GIS Associate / Analyst</div>
+                    <div class="tl-company"><i class="fas fa-landmark" style="margin-right:6px;"></i>Excise Taxation &amp; Narcotics Control Dept. — Government of KP</div>
+                    <div class="tl-desc">Led digitization of property taxation records across District Peshawar. Supervised a team of 21 GIS subordinates conducting field-based property taxation surveys. Established QA/QC protocols for data validation, ensuring spatial accuracy and completeness of all digitized cadastral records.</div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-date"><i class="fas fa-circle" style="font-size:.5rem;color:var(--secondary);margin-right:6px;"></i>DEC 2023 – PRESENT</div>
+                <div class="tl-card">
+                    <div class="tl-title">GIS Analyst (Project Based)</div>
+                    <div class="tl-company"><i class="fas fa-seedling" style="margin-right:6px;"></i>Agriculture University Peshawar — Khyber Pakhtunkhwa</div>
+                    <div class="tl-desc">Gathering and processing spatial data for institutional research using ESRI products (ArcGIS, ArcGIS Pro). Producing cartographic visualizations and analytical charts. Conducting QA/QC on geospatial datasets and delivering end-user training programs on GIS and Remote Sensing applications in agriculture.</div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-date"><i class="fas fa-circle" style="font-size:.5rem;color:var(--secondary);margin-right:6px;"></i>MAR 2023 – PRESENT</div>
+                <div class="tl-card">
+                    <div class="tl-title">GIS Consultant (Freelance)</div>
+                    <div class="tl-company"><i class="fas fa-globe" style="margin-right:6px;"></i>Independent / Self-Employed</div>
+                    <div class="tl-desc">Delivering data-driven geospatial solutions in spatial analysis, environmental modeling, and disaster risk assessment. Expertise spans site suitability modeling, UAV-based terrain mapping, web scraping for geospatial enrichment, and land record digitization. Leveraging ML algorithms (Random Forest, SVM, CNN) and R/Python for flood susceptibility modeling, climate change assessments, and spatio-temporal environmental monitoring.</div>
+                </div>
+            </div>
+
+            <div class="tl-item">
+                <div class="tl-dot"></div>
+                <div class="tl-date"><i class="fas fa-circle" style="font-size:.5rem;color:var(--secondary);margin-right:6px;"></i>APR 2022 – SEP 2024</div>
+                <div class="tl-card">
+                    <div class="tl-title">GIS Intern (Volunteer)</div>
+                    <div class="tl-company"><i class="fas fa-tree" style="margin-right:6px;"></i>Forest Planning &amp; Monitoring Circle — KP Forest Department</div>
+                    <div class="tl-desc">GPS-based field data collection, digitization of cadastral maps, land cover classification and mapping of command areas, generation of comprehensive geospatial reports, and quality assurance of spatial datasets for forest planning and monitoring initiatives.</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">EXPERTISE</div>
+            <h2 class="section-title">Skills &amp; <span>Capabilities</span></h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="skills-grid">
+
+            <div class="skill-cat reveal">
+                <div class="skill-cat-head"><i class="fas fa-map"></i> GIS &amp; Remote Sensing</div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">ArcGIS / ArcGIS Pro</span><span class="sbar-pct">95%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="95"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">QGIS</span><span class="sbar-pct">95%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="95"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">Google Earth Engine</span><span class="sbar-pct">90%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="90"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">SNAP / Erdas Imagine</span><span class="sbar-pct">85%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="85"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">Drone Mapping (Agisoft)</span><span class="sbar-pct">82%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="82"></div></div></div>
+            </div>
+
+            <div class="skill-cat reveal">
+                <div class="skill-cat-head"><i class="fas fa-code"></i> Programming &amp; Automation</div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">Python (GIS / ML / Scraping)</span><span class="sbar-pct">90%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="90"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">R Programming</span><span class="sbar-pct">85%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="85"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">Web Scraping (Playwright / Selenium)</span><span class="sbar-pct">88%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="88"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">ArcPy / QGIS Plugins</span><span class="sbar-pct">82%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="82"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">Web GIS Development</span><span class="sbar-pct">78%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="78"></div></div></div>
+            </div>
+
+            <div class="skill-cat reveal">
+                <div class="skill-cat-head"><i class="fas fa-brain"></i> AI &amp; Machine Learning</div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">Random Forest Algorithm</span><span class="sbar-pct">88%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="88"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">Support Vector Machine (SVM)</span><span class="sbar-pct">85%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="85"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">CNN (Image Classification)</span><span class="sbar-pct">80%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="80"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">XGBoost / kNN</span><span class="sbar-pct">82%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="82"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">Spatial ML Workflows</span><span class="sbar-pct">87%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="87"></div></div></div>
+            </div>
+
+            <div class="skill-cat reveal">
+                <div class="skill-cat-head"><i class="fas fa-tools"></i> Software &amp; Tools</div>
+                <div class="tool-cloud">
+                    <span class="tool-pill">PostGIS</span><span class="tool-pill">Figma</span>
+                    <span class="tool-pill">InVEST</span><span class="tool-pill">Idrisi</span>
+                    <span class="tool-pill">RAMMS</span><span class="tool-pill">ODK</span>
+                    <span class="tool-pill">Kobo Toolbox</span><span class="tool-pill">Leaflet.js</span>
+                    <span class="tool-pill">PostgreSQL</span><span class="tool-pill">Geodetector</span>
+                    <span class="tool-pill">GRACE</span><span class="tool-pill">MS Office</span>
+                </div>
+            </div>
+
+            <div class="skill-cat reveal">
+                <div class="skill-cat-head"><i class="fas fa-satellite"></i> Field &amp; Spatial Analysis</div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">GPS Field Surveys</span><span class="sbar-pct">92%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="92"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">UAV / Drone Operations</span><span class="sbar-pct">85%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="85"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">Cartographic Design</span><span class="sbar-pct">90%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="90"></div></div></div>
+                <div class="sbar-item"><div class="sbar-row"><span class="sbar-name">Spatial Statistics</span><span class="sbar-pct">85%</span></div><div class="sbar-track"><div class="sbar-fill" data-w="85"></div></div></div>
+            </div>
+
+            <div class="skill-cat reveal">
+                <div class="skill-cat-head"><i class="fas fa-users"></i> Management &amp; Soft Skills</div>
+                <div class="soft-grid">
+                    <div class="soft-item"><i class="fas fa-circle"></i>Project Coordination</div>
+                    <div class="soft-item"><i class="fas fa-circle"></i>Team Leadership</div>
+                    <div class="soft-item"><i class="fas fa-circle"></i>QA/QC Management</div>
+                    <div class="soft-item"><i class="fas fa-circle"></i>Client Communication</div>
+                    <div class="soft-item"><i class="fas fa-circle"></i>Resource Allocation</div>
+                    <div class="soft-item"><i class="fas fa-circle"></i>Technical Mentoring</div>
+                    <div class="soft-item"><i class="fas fa-circle"></i>Report Writing</div>
+                    <div class="soft-item"><i class="fas fa-circle"></i>Curriculum Design</div>
+                    <div class="soft-item"><i class="fas fa-circle"></i>Stakeholder Mgmt.</div>
+                    <div class="soft-item"><i class="fas fa-circle"></i>Critical Thinking</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section id="projects">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">PORTFOLIO</div>
+            <h2 class="section-title">Featured <span>Projects</span></h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="filter-bar reveal">
+            <button class="filt-btn active" data-f="all">All Projects</button>
+            <button class="filt-btn" data-f="gis">GIS &amp; RS Analysis</button>
+            <button class="filt-btn" data-f="ml">ML, AI &amp; Sentiment</button>
+            <button class="filt-btn" data-f="field">Field &amp; International</button>
+        </div>
+        <div class="projects-grid">
+
+            <!-- GIS/RS -->
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="Mulkhow Dam study/Study Area Dam managemant A3 Size.jpg" alt="Drone Mapping UoP" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-helicopter"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">Drone Mapping of University of Peshawar</div><div class="proj-desc">Complete UAV-based aerial survey and 3D mapping of UoP campus using photogrammetric processing in Agisoft Metashape.</div><div class="proj-tags"><span class="proj-tag">UAV</span><span class="proj-tag">Agisoft</span><span class="proj-tag">3D Modeling</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="Kaghan Valley Flood susciptibility Map/Results/Maps/Kaghan Valley Flood Sucepibility Map.jpg" alt="Flood Susceptibility Chitral" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-water"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">Flood Susceptibility &amp; Risk Assessment — Chitral, KP</div><div class="proj-desc">Comprehensive flood susceptibility, risk, hazard and vulnerability assessment with socio-economic impact analysis in Chitral.</div><div class="proj-tags"><span class="proj-tag">ArcGIS</span><span class="proj-tag">Python</span><span class="proj-tag">Socio-economic</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="SUPARCO landslide susciptibility Maps/Hunza Parameters Map.jpg" alt="Landslide Balakot" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-mountain"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">Landslide &amp; Debris Flow Risk Assessment — Balakot</div><div class="proj-desc">Hazard and risk assessment in Northern Pakistan using UAVs combined with RAMMS simulation for debris flow modelling.</div><div class="proj-tags"><span class="proj-tag">UAV</span><span class="proj-tag">RAMMS</span><span class="proj-tag">Hazard Modeling</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="Himalayan Snow Analysis Maps/HimalayanIntactSnow2022.jpg" alt="Chitral Snowmelt HKH" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-snowflake"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">Climate Change &amp; Snowmelt — Chitral River Basin (HKH)</div><div class="proj-desc">Final year research: climate change impact on snowmelt and runoff in Chitral River Basin, Hindukush Himalayan region, 2000–2024.</div><div class="proj-tags"><span class="proj-tag">GEE</span><span class="proj-tag">R</span><span class="proj-tag">Climate Analysis</span><span class="proj-tag">HKH</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="Mardan LST Maps Zain Khattak BS proposal/Mardan LST July2002.jpg" alt="Urban Heat Island" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-sun"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">Urban &amp; Regional Heat Island — Northern Punjab</div><div class="proj-desc">UHI and RHI assessment analyzing rapid urbanization impact on thermal environments using Landsat LST data.</div><div class="proj-tags"><span class="proj-tag">Landsat</span><span class="proj-tag">QGIS</span><span class="proj-tag">LST Analysis</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="Pakistan Drought Maps/Maps/drought maps/climate2.jpg" alt="Pakistan Drought Analysis" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-cloud-rain"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">Meteorological &amp; Agricultural Drought Analysis — Pakistan</div><div class="proj-desc">Drought events, intensity and propagation analysis for all of Pakistan and Sindh Province using R and drought indices.</div><div class="proj-tags"><span class="proj-tag">R</span><span class="proj-tag">SPEI</span><span class="proj-tag">Drought Indices</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="Poyang Lake Ecological Maps/Maps/LandUse Map 1.jpg" alt="Poyang Lake China" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-leaf"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">Ecological Risk Assessment — Poyang Lake, China</div><div class="proj-desc">Spatio-temporal ecological risk assessment in Poyang Lake, China, evaluating ecosystem health and environmental change.</div><div class="proj-tags"><span class="proj-tag">GEE</span><span class="proj-tag">LULC</span><span class="proj-tag">Ecological Index</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="Hunza GLOF/Maps/Hoper Lake Map.jpg" alt="Hunza GLOF" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-tint"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">Groundwater Potential Analysis — Hayatabad, Peshawar</div><div class="proj-desc">Urban groundwater potential zones identified through multi-criteria evaluation and integrated spatial analysis.</div><div class="proj-tags"><span class="proj-tag">ArcGIS</span><span class="proj-tag">MCE</span><span class="proj-tag">Hydrogeology</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="Gilgit River Basin Snow Analysis Maps/Change In Landcover from 1995  to 2025.jpg" alt="Gilgit Landcover" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-city"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">Carbon Sequestration Study — Guangdong Province, China</div><div class="proj-desc">Spatio-temporal analysis of carbon sequestration dynamics in Guangdong Province from multi-year satellite imagery.</div><div class="proj-tags"><span class="proj-tag">GEE</span><span class="proj-tag">InVEST</span><span class="proj-tag">Carbon Stock</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="River Indus Catchment Turbela Maps/Maps/Figure 2.jpg" alt="River Indus" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-road"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">Land Use &amp; Land Cover — River Indus Basin, Tarbela Dam</div><div class="proj-desc">LULC change detection analysis in River Indus Basin downstream Tarbela Dam using multi-temporal satellite data.</div><div class="proj-tags"><span class="proj-tag">ArcGIS</span><span class="proj-tag">Change Detection</span><span class="proj-tag">LULC</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="Dera Ismail Khan Flood/Flood Susceptibility Map DI KHAN.jpg" alt="DI Khan Flood" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-trash-alt"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">Flood Susceptibility — Dera Ismail Khan</div><div class="proj-desc">Detailed flood susceptibility mapping in Dera Ismail Khan using GIS-based multi-criteria spatial analysis.</div><div class="proj-tags"><span class="proj-tag">QGIS</span><span class="proj-tag">AHP</span><span class="proj-tag">Flood Susceptibility</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="Bannu Basin Maps/Maps/Annual_SPEI1.jpg" alt="Bannu Drought" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-file-alt"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">GRACE-based Groundwater &amp; Drought — Bannu Basin</div><div class="proj-desc">Meteorological, agricultural and GRACE-based groundwater drought analysis in Bannu Basin using R programming.</div><div class="proj-tags"><span class="proj-tag">R</span><span class="proj-tag">GRACE</span><span class="proj-tag">Drought Indices</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="gis">
+                <div class="proj-img-wrap"><img src="Kohat LST Map/Kohat LST.jpg" alt="Kohat LST" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-thermometer-half"></i></div><div class="proj-cat">GIS &amp; RS Analysis</div><div class="proj-title">Land Surface Temperature Analysis — Kohat</div><div class="proj-desc">Thermal environment analysis and LST mapping of Kohat district using Landsat imagery and remote sensing techniques.</div><div class="proj-tags"><span class="proj-tag">Landsat</span><span class="proj-tag">LST</span><span class="proj-tag">QGIS</span></div>
+            </div>
+
+            <!-- ML / AI -->
+            <div class="proj-card reveal" data-cat="ml">
+                <div class="proj-img-wrap"><img src="Gilgit River Basin Snow Analysis Maps/Change In Landcover from 1995  to 2025.jpg" alt="CNN Landcover" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-robot"></i></div><div class="proj-cat">Machine Learning &amp; AI</div><div class="proj-title">Landcover Classification via CNN — Satellite Imagery</div><div class="proj-desc">Deep learning-based landcover detection using a trained CNN model applied to multispectral satellite imageries for high-accuracy classification.</div><div class="proj-tags"><span class="proj-tag">CNN</span><span class="proj-tag">Deep Learning</span><span class="proj-tag">Python</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="ml">
+                <div class="proj-img-wrap"><img src="Sindh and Makran Flood Maps/Maps/Maps/Educational Facilities Exposure Map.jpg" alt="Sindh Flood Random Forest" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-chart-bar"></i></div><div class="proj-cat">Machine Learning &amp; AI</div><div class="proj-title">Flood Susceptibility via Random Forest — Sindh &amp; Makran</div><div class="proj-desc">Comprehensive flood susceptibility, risk, hazard, vulnerability, exposure and socioeconomic study using Random Forest algorithm.</div><div class="proj-tags"><span class="proj-tag">Random Forest</span><span class="proj-tag">Python</span><span class="proj-tag">Flood ML</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="ml">
+                <div class="proj-img-wrap"><img src="SUPARCO landslide susciptibility Maps/Hunza Parameters Map.jpg" alt="SVM Erosion Kunhar" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-layer-group"></i></div><div class="proj-cat">Machine Learning &amp; AI</div><div class="proj-title">Morphometric Erosion Analysis via SVM — Kunhar Basin</div><div class="proj-desc">Identifying erosion-prone zones in Kunhar River Basin through morphometric analysis using SVM classification algorithm.</div><div class="proj-tags"><span class="proj-tag">SVM</span><span class="proj-tag">DEM</span><span class="proj-tag">Morphometry</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="ml">
+                <div class="proj-img-wrap"><img src="Nowshera Soil Loss Maps/Maps/Classes Maps/Geological Map.jpg" alt="Nowshera Soil Loss" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-seedling"></i></div><div class="proj-cat">Machine Learning &amp; AI</div><div class="proj-title">Soil Loss Prediction — Nowshera, KP</div><div class="proj-desc">Comparative soil loss prediction using multiple algorithms — kNN, XGBoost, Random Forest — evaluating performance across Nowshera district.</div><div class="proj-tags"><span class="proj-tag">XGBoost</span><span class="proj-tag">kNN</span><span class="proj-tag">Random Forest</span><span class="proj-tag">R</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="ml">
+                <div class="proj-img-wrap"><img src="Mardan LST Maps Zain Khattak BS proposal/Mardan LST July2002.jpg" alt="Urban Heat Island ML" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-thermometer-half"></i></div><div class="proj-cat">Machine Learning &amp; AI</div><div class="proj-title">Urban Heat Island via ML — Zhengzhou, China</div><div class="proj-desc">Modelling and predicting UHI thermal dynamics in Zhengzhou using machine learning algorithms on satellite-derived LST data.</div><div class="proj-tags"><span class="proj-tag">ML Algorithms</span><span class="proj-tag">LST</span><span class="proj-tag">Python</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="ml">
+                <div class="proj-img-wrap"><img src="District Swat Maps/Swat UCs Flood Susceptibility Map.jpg" alt="Swat Flash Flood Twitter" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fab fa-twitter"></i></div><div class="proj-cat">Machine Learning &amp; AI</div><div class="proj-title">Flash Flood &amp; Twitter Sentiment Analysis — Swat, KP</div><div class="proj-desc">Spatial analysis of flash flood events correlated with public concern and sentiment from Twitter (X) data in Swat.</div><div class="proj-tags"><span class="proj-tag">NLP</span><span class="proj-tag">Sentiment Analysis</span><span class="proj-tag">Python</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="ml">
+                <div class="proj-img-wrap"><img src="Karachi urban flooding maps/Maps/comments 17_5_2025/Karachi UCs Emotional Response.jpg" alt="Karachi Urban Flooding" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-city"></i></div><div class="proj-cat">Machine Learning &amp; AI</div><div class="proj-title">Urban Flooding &amp; Public Sentiment — Karachi, Sindh</div><div class="proj-desc">Urban flooding analysis combined with public concern and sentiment analysis using social media data in Karachi.</div><div class="proj-tags"><span class="proj-tag">Sentiment Analysis</span><span class="proj-tag">Urban Flood</span><span class="proj-tag">GEE</span></div>
+            </div>
+
+            <!-- Field Surveys -->
+            <div class="proj-card reveal" data-cat="field">
+                <div class="proj-img-wrap"><img src="Thailand Crops Yield maps/Coffee_1.jpg" alt="Thailand Crops" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-seedling"></i></div><div class="proj-cat">Field Survey &amp; International</div><div class="proj-title">Crop Yield Prediction — Thailand</div><div class="proj-desc">Agricultural crop yield prediction using R programming and spatial analysis for Thailand, including coffee and major crop yield modelling.</div><div class="proj-tags"><span class="proj-tag">R</span><span class="proj-tag">Crop Yield</span><span class="proj-tag">Agriculture GIS</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="field">
+                <div class="proj-img-wrap"><img src="UlaanBaatar AgriFarm site Suitability Maps/Proposed Agriculture Site Map.jpg" alt="Mongolia Farm Suitability" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-tractor"></i></div><div class="proj-cat">Field Survey &amp; International</div><div class="proj-title">Agricultural Farm Site Suitability — Ulaanbaatar, Mongolia</div><div class="proj-desc">GIS-based site suitability analysis for agricultural farming in Ulaanbaatar, Mongolia using multi-criteria spatial evaluation.</div><div class="proj-tags"><span class="proj-tag">ArcGIS</span><span class="proj-tag">MCE</span><span class="proj-tag">Agriculture</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="field">
+                <div class="proj-img-wrap"><img src="Mulkhow Dam study/Study Area Dam managemant A3 Size.jpg" alt="Mulkhow Dam" class="proj-img" loading="lazy"></div>
+                <div class="proj-ico"><i class="fas fa-water"></i></div><div class="proj-cat">Field Survey</div><div class="proj-title">Check Dam Planning — Mulkhow, Chitral, KP</div><div class="proj-desc">Planning of check dam and its catchment and command area in Mulkhow, Chitral using GIS spatial analysis and field data.</div><div class="proj-tags"><span class="proj-tag">ArcGIS</span><span class="proj-tag">Watershed</span><span class="proj-tag">Dam Planning</span></div>
+            </div>
+
+            <div class="proj-card reveal" data-cat="field"><div class="proj-ico"><i class="fas fa-clipboard-list"></i></div><div class="proj-cat">Field Survey</div><div class="proj-title">New Peshawar Valley Project — Data Collection</div><div class="proj-desc">Large-scale field data collection under KP Planning and Development Department using ODK mobile platform for spatial data capture.</div><div class="proj-tags"><span class="proj-tag">ODK</span><span class="proj-tag">GPS</span><span class="proj-tag">KP Government</span></div></div>
+
+            <div class="proj-card reveal" data-cat="field"><div class="proj-ico"><i class="fas fa-home"></i></div><div class="proj-cat">Field Survey</div><div class="proj-title">Post-Flood Recovery Survey — District Nowshera</div><div class="proj-desc">Comprehensive post-flood recovery and 2022 flood affectees data collection in District Nowshera using Kobo Toolbox.</div><div class="proj-tags"><span class="proj-tag">Kobo Toolbox</span><span class="proj-tag">Flood Recovery</span><span class="proj-tag">Field Survey</span></div></div>
+
+            <div class="proj-card reveal" data-cat="field"><div class="proj-ico"><i class="fas fa-industry"></i></div><div class="proj-cat">Field Survey</div><div class="proj-title">Marble Industry Land Use Survey — Tehsil Mathra</div><div class="proj-desc">Detailed survey of land use affected by the Marble industry in Tehsil Mathra Peshawar, mapping environmental footprints.</div><div class="proj-tags"><span class="proj-tag">Kobo Toolbox</span><span class="proj-tag">LULC</span><span class="proj-tag">Environment</span></div></div>
+
+            <div class="proj-card reveal" data-cat="field"><div class="proj-ico"><i class="fas fa-water"></i></div><div class="proj-cat">Field Survey</div><div class="proj-title">Fresh Water Scarcity &amp; Tube Wells Survey — District Karak</div><div class="proj-desc">Public health field survey mapping fresh water scarcity and tube wells for Tehsil Banda Daud Shah, District Karak.</div><div class="proj-tags"><span class="proj-tag">Kobo Toolbox</span><span class="proj-tag">Public Health</span><span class="proj-tag">Water GIS</span></div></div>
+
+            <div class="proj-card reveal" data-cat="field"><div class="proj-ico"><i class="fas fa-wheat-alt"></i></div><div class="proj-cat">Field Survey</div><div class="proj-title">Climate-Affected Crops Survey — Tehsil Takht-e-Nasrati</div><div class="proj-desc">Field survey documenting climate change impacts on crops in Tehsil Takht-e-Nasrati, District Karak.</div><div class="proj-tags"><span class="proj-tag">Kobo Toolbox</span><span class="proj-tag">Agriculture GIS</span><span class="proj-tag">Climate</span></div></div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== MAP ===== -->
+<section id="map-section">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">GEOGRAPHIC FOOTPRINT</div>
+            <h2 class="section-title">Project <span>Locations</span></h2>
+            <div class="section-line"></div>
+            <p style="color:var(--text-muted);margin-top:1rem;font-size:.93rem;">Click any marker to see projects completed at that location.</p>
+        </div>
+        <div id="proj-map" class="reveal"></div>
+    </div>
+</section>
+
+<!-- ===== EDUCATION ===== -->
+<section id="education">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">ACADEMIC BACKGROUND</div>
+            <h2 class="section-title">Education &amp; <span>Training</span></h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="edu-grid">
+            <div class="edu-card reveal">
+                <div class="edu-year">SEP 2021 – JUNE 2025</div>
+                <div class="edu-degree">Bachelor of Science in Geomatics (GIS/RS)</div>
+                <div class="edu-inst">University of Peshawar, Khyber Pakhtunkhwa</div>
+                <div class="edu-detail">Courses: Geography, GIS Fundamentals, Cartographic Techniques, Surveying &amp; Leveling, SDSS, Geo-statistics, Advanced Photogrammetry &amp; RS, Programming, Project Management.<br><br><strong style="color:var(--primary-light);">Thesis:</strong> Climate Change Impact on Snowmelt &amp; Runoff in Chitral River Basin (HKH Region) 2000–2024.</div>
+                <div class="edu-badge">2nd Position · CGPA 3.85 / 4.0 (86%)</div>
+            </div>
+            <div class="edu-card reveal">
+                <div class="edu-year">2025 – PRESENT</div>
+                <div class="edu-degree">Master of Science in Project Management</div>
+                <div class="edu-inst">Currently Enrolled</div>
+                <div class="edu-detail">Advanced studies in project management methodologies, organizational leadership, strategic planning, and resource management — with focus on integration into GIS and geospatial project workflows.</div>
+            </div>
+            <div class="edu-card reveal">
+                <div class="edu-year">2025</div>
+                <div class="edu-degree">Huawei Cloud Artificial Intelligence Course</div>
+                <div class="edu-inst">Huawei Technologies</div>
+                <div class="edu-detail">Professional training in Cloud AI technologies covering machine learning frameworks, cloud computing infrastructure, and AI applications in geospatial and data science domains.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CERTIFICATIONS ===== -->
+<section id="certifications">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">CREDENTIALS</div>
+            <h2 class="section-title">Certifications &amp; <span>Achievements</span></h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="certs-grid">
+            <div class="cert-card reveal"><div class="cert-ico"><i class="fas fa-award"></i></div><div><div class="cert-title">Achievement Certificate — Quiz Competition</div><div class="cert-org">World GIS Week, University of Peshawar (2022)</div></div></div>
+            <div class="cert-card reveal"><div class="cert-ico"><i class="fas fa-certificate"></i></div><div><div class="cert-title">Participation — World GIS Week</div><div class="cert-org">University of Peshawar (2022)</div></div></div>
+            <div class="cert-card reveal"><div class="cert-ico"><i class="fas fa-globe-asia"></i></div><div><div class="cert-title">3rd Int'l Conference on Sustainable Utilization of Natural Resources (SUN-R)</div><div class="cert-org">NCEG (2023)</div></div></div>
+            <div class="cert-card reveal"><div class="cert-ico"><i class="fas fa-map-marked-alt"></i></div><div><div class="cert-title">GIS Awareness Day Seminar</div><div class="cert-org">NCEG (2023)</div></div></div>
+            <div class="cert-card reveal"><div class="cert-ico"><i class="fas fa-star"></i></div><div><div class="cert-title">GIS Day Conference — Participation</div><div class="cert-org">NCEG &amp; Soil &amp; Water Conservation KP Dept. (2024)</div></div></div>
+            <div class="cert-card reveal"><div class="cert-ico"><i class="fas fa-users-cog"></i></div><div><div class="cert-title">GIS Day Conference — Organizer</div><div class="cert-org">NCEG &amp; Soil &amp; Water Conservation KP Dept. (2024)</div></div></div>
+            <div class="cert-card reveal"><div class="cert-ico"><i class="fas fa-mountain"></i></div><div><div class="cert-title">7th Int'l Conference on Earth Sciences Pakistan</div><div class="cert-org">Baragali Campus, University of Peshawar (2024)</div></div></div>
+            <div class="cert-card reveal"><div class="cert-ico"><i class="fas fa-cloud-sun-rain"></i></div><div><div class="cert-title">11th Int'l Conference — Climate Change, Food Security &amp; Biodiversity</div><div class="cert-org">Baragali Campus, University of Peshawar (2025)</div></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== ACTIVITIES ===== -->
+<section id="activities">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">LEADERSHIP</div>
+            <h2 class="section-title">Activities &amp; <span>Leadership</span></h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="act-grid">
+            <div class="act-card reveal">
+                <div class="act-ico"><i class="fas fa-crown"></i></div>
+                <div class="act-title">Khyber Geomatics Society (KGS)</div>
+                <div class="act-desc">Progressive leadership: Joint Secretary (2022-23) → General Secretary (2023-24) → President (2024-25) → Chairman (2025-26). Leading geomatics students and professionals across KP.</div>
+            </div>
+            <div class="act-card reveal">
+                <div class="act-ico"><i class="fas fa-lightbulb"></i></div>
+                <div class="act-title">South Youth Empowerment (SYE)</div>
+                <div class="act-desc">Founder &amp; Chairman of SYE student organization, empowering youth through education, leadership development, and community-driven initiatives.</div>
+            </div>
+            <div class="act-card reveal">
+                <div class="act-ico"><i class="fas fa-users"></i></div>
+                <div class="act-title">Khattak Student Association (KSA)</div>
+                <div class="act-desc">Active member and Cultural Secretary for session 2023-24, promoting cultural activities, student engagement, and inter-community collaboration.</div>
+            </div>
+            <div class="act-card reveal">
+                <div class="act-ico"><i class="fas fa-balance-scale"></i></div>
+                <div class="act-title">Political Rights Activism</div>
+                <div class="act-desc">Active political rights activist advocating for democratic values, civic participation, and social justice within the community.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== REFERENCES ===== -->
+<section id="references">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">RECOMMENDATIONS</div>
+            <h2 class="section-title">Professional <span>References</span></h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="edu-grid">
+            <div class="edu-card reveal" style="text-align:center;">
+                <div style="font-size:2.2rem;color:var(--primary-light);margin-bottom:.9rem;"><i class="fas fa-user-tie"></i></div>
+                <div class="edu-degree" style="font-size:1rem;">Dr. Naseem Ahmed</div>
+                <div class="edu-inst">GIS Manager</div>
+                <div class="edu-detail">Khyber Pakhtunkhwa Forest Department</div>
+                <div style="margin-top:.75rem;font-size:.8rem;color:var(--secondary);">(+92) 333 9075353</div>
+                <div style="font-size:.78rem;color:var(--text-muted);">naseemkhattak02@gmail.com</div>
+            </div>
+            <div class="edu-card reveal" style="text-align:center;">
+                <div style="font-size:2.2rem;color:var(--primary-light);margin-bottom:.9rem;"><i class="fas fa-user-tie"></i></div>
+                <div class="edu-degree" style="font-size:1rem;">Dr. Muhammad Jamal Nasir</div>
+                <div class="edu-inst">Assistant Professor — Dept. of Geography &amp; Geomatics (GIS/RS)</div>
+                <div class="edu-detail">University of Peshawar</div>
+                <div style="margin-top:.75rem;font-size:.8rem;color:var(--secondary);">(+92) 333 9851600</div>
+                <div style="font-size:.78rem;color:var(--text-muted);">drjamal@uop.edu.pk</div>
+            </div>
+            <div class="edu-card reveal" style="text-align:center;">
+                <div style="font-size:2.2rem;color:var(--primary-light);margin-bottom:.9rem;"><i class="fas fa-user-tie"></i></div>
+                <div class="edu-degree" style="font-size:1rem;">Dr. Alamsher Bacha</div>
+                <div class="edu-inst">Deputy Director GIS</div>
+                <div class="edu-detail">Khyber Pakhtunkhwa Home Department</div>
+                <div style="margin-top:.75rem;font-size:.8rem;color:var(--secondary);">(+92) 333 9471730</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+    <div class="container">
+        <div class="section-header reveal">
+            <div class="section-tag">GET IN TOUCH</div>
+            <h2 class="section-title">Contact <span>Me</span></h2>
+            <div class="section-line"></div>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info reveal">
+                <h3>Let's Work Together</h3>
+                <p>Whether you have a GIS project, need spatial analysis consulting, or want to explore collaboration — I'd love to hear from you.</p>
+                <div class="contact-links">
+                    <a href="mailto:behzadsk12@gmail.com" class="clink"><i class="fas fa-envelope"></i><div><div class="clink-val">behzadsk12@gmail.com</div><div class="clink-label">Email</div></div></a>
+                    <a href="tel:+923328978462" class="clink"><i class="fas fa-phone"></i><div><div class="clink-val">(+92) 332 8978462</div><div class="clink-label">Phone / WhatsApp</div></div></a>
+                    <a href="https://linkedin.com" target="_blank" class="clink"><i class="fab fa-linkedin"></i><div><div class="clink-val">LinkedIn Profile</div><div class="clink-label">Update with your LinkedIn URL</div></div></a>
+                    <a href="https://github.com" target="_blank" class="clink"><i class="fab fa-github"></i><div><div class="clink-val">GitHub Profile</div><div class="clink-label">Update with your GitHub URL</div></div></a>
+                    <a href="https://behzadsk.github.io/behzad-portfolio/" target="_blank" class="clink"><i class="fas fa-globe"></i><div><div class="clink-val">Website Portfolio</div><div class="clink-label">behzadsk.github.io/behzad-portfolio</div></div></a>
+                    <div class="clink" style="cursor:default;"><i class="fas fa-map-marker-alt"></i><div><div class="clink-val">Pakistan</div><div class="clink-label">Available for Remote Work Worldwide</div></div></div>
+                </div>
+            </div>
+            <form class="contact-form reveal" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <div class="form-row">
+                    <div class="form-grp"><label>First Name</label><input type="text" name="firstName" placeholder="John" required></div>
+                    <div class="form-grp"><label>Last Name</label><input type="text" name="lastName" placeholder="Doe" required></div>
+                </div>
+                <div class="form-grp"><label>Email Address</label><input type="email" name="email" placeholder="john@example.com" required></div>
+                <div class="form-grp"><label>Subject</label><input type="text" name="subject" placeholder="Project Inquiry / Collaboration / Consulting"></div>
+                <div class="form-grp"><label>Message</label><textarea name="message" placeholder="Tell me about your project or how I can help..." required></textarea></div>
+                <button type="submit" class="btn btn-solid" style="width:100%;justify-content:center;border:none;">
+                    <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+                <p id="form-status" style="text-align:center;font-size:.85rem;color:var(--secondary);display:none;">Message sent! I'll get back to you soon.</p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+    <div class="footer-socials">
+        <a href="mailto:behzadsk12@gmail.com" class="soc-link" title="Email"><i class="fas fa-envelope"></i></a>
+        <a href="https://linkedin.com" target="_blank" class="soc-link" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://github.com" target="_blank" class="soc-link" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://behzadsk.github.io/behzad-portfolio/" target="_blank" class="soc-link" title="Website Portfolio"><i class="fas fa-globe"></i></a>
+        <a href="tel:+923328978462" class="soc-link" title="Phone"><i class="fas fa-phone"></i></a>
+    </div>
+    <p class="footer-txt">
+        <span>Behzad Saeed</span> &copy; 2026 &nbsp;|&nbsp;
+        GIS Expert &amp; Spatial Data Scientist &nbsp;|&nbsp; Pakistan
+        &nbsp;|&nbsp; Built with <span>&hearts;</span>
+    </p>
+</footer>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+/* ========== LOADER ========== */
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const l = document.getElementById('loader');
+        l.style.opacity = '0';
+        setTimeout(() => l.style.display = 'none', 500);
+    }, 1900);
+});
+
+/* ========== THEME TOGGLE ========== */
+function toggleTheme() {
+    const html = document.documentElement;
+    const icon = document.getElementById('themeIcon');
+    const isLight = html.classList.toggle('light');
+    icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+}
+// Apply saved preference (default is light — already set on <html>)
+(function() {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark') {
+        document.documentElement.classList.remove('light');
+        const icon = document.getElementById('themeIcon');
+        if (icon) icon.className = 'fas fa-moon';
+    } else {
+        // Light is default — ensure icon shows sun
+        const icon = document.getElementById('themeIcon');
+        if (icon) icon.className = 'fas fa-sun';
+    }
+})();
+
+/* ========== MOBILE MENU ========== */
+function toggleMenu() {
+    document.getElementById('mobMenu').classList.toggle('open');
+}
+
+/* ========== NAV SCROLL ========== */
+const nav = document.getElementById('nav');
+const bttBtn = document.getElementById('btt');
+window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+    bttBtn.classList.toggle('show', window.scrollY > 350);
+});
+
+/* ========== SMOOTH SCROLL ========== */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+        const t = a.getAttribute('href');
+        if (t === '#') return;
+        e.preventDefault();
+        document.querySelector(t)?.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+/* ========== HERO CANVAS ========== */
+const canvas = document.getElementById('hero-canvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas() { canvas.width = innerWidth; canvas.height = innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+const PARTICLE_COUNT = window.innerWidth < 768 ? 60 : 120;
+const particles = [];
+
+class Particle {
+    constructor() { this.reset(true); }
+    reset(init) {
+        this.x = Math.random() * canvas.width;
+        this.y = init ? Math.random() * canvas.height : Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.45;
+        this.vy = (Math.random() - 0.5) * 0.45;
+        this.r = Math.random() * 1.8 + 0.4;
+        this.a = Math.random() * 0.55 + 0.15;
+        this.col = Math.random() > 0.5 ? '139,92,246' : '16,185,129';
+    }
+    update() {
+        this.x += this.vx; this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${this.col},${this.a})`;
+        ctx.fill();
+    }
+}
+for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
+
+let mouse = {x: -999, y: -999};
+window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+function getThemeColors() {
+    const light = document.documentElement.classList.contains('light');
+    return {
+        bg1: light ? '#F5F3FF' : '#05050F',
+        bg2: light ? '#EDE9FE' : '#0A0520',
+        grid: light ? 'rgba(109,40,217,0.05)' : 'rgba(139,92,246,0.04)',
+        line: light ? '109,40,217' : '139,92,246',
+        p1:   light ? '109,40,217' : '139,92,246',
+        p2:   light ? '5,150,105'  : '16,185,129',
+    };
+}
+
+function animLoop() {
+    const c = getThemeColors();
+    const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+    g.addColorStop(0, c.bg1); g.addColorStop(.5, c.bg2); g.addColorStop(1, c.bg1);
+    ctx.fillStyle = g;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.strokeStyle = c.grid; ctx.lineWidth = 1;
+    for (let x=0;x<canvas.width;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
+    for (let y=0;y<canvas.height;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}
+
+    for (let i=0;i<particles.length;i++){
+        for (let j=i+1;j<particles.length;j++){
+            const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+            const d=Math.sqrt(dx*dx+dy*dy);
+            if(d<110){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle=`rgba(${c.line},${(1-d/110)*0.18})`;ctx.lineWidth=0.5;ctx.stroke();}
+        }
+    }
+    particles.forEach(p => {
+        const col = Math.random() > 0.5 ? c.p1 : c.p2;
+        const dx = p.x - mouse.x, dy = p.y - mouse.y;
+        const d = Math.sqrt(dx*dx+dy*dy);
+        if (d < 90) { p.vx += dx/d*0.08; p.vy += dy/d*0.08; }
+        const spd = Math.sqrt(p.vx*p.vx+p.vy*p.vy);
+        if (spd > 1.5) { p.vx = p.vx/spd*1.5; p.vy = p.vy/spd*1.5; }
+        p.update();
+        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = `rgba(${p.col},${p.a})`; ctx.fill();
+    });
+    requestAnimationFrame(animLoop);
+}
+animLoop();
+
+/* ========== TYPED TEXT ========== */
+const phrases = [
+    'Spatial Data Analyst & Scientist',
+    'Machine Learning in GIS Expert',
+    'Project Coordinator & Team Leader',
+    'Web GIS Developer',
+    'Drone Mapping Specialist',
+    'Google Earth Engine Expert',
+    'Environmental Modeler & Researcher'
+];
+let pi = 0, ci = 0, del = false;
+const typedEl = document.getElementById('typed');
+function type() {
+    const cur = phrases[pi];
+    typedEl.textContent = del ? cur.substring(0, ci-1) : cur.substring(0, ci+1);
+    del ? ci-- : ci++;
+    let wait = del ? 45 : 95;
+    if (!del && ci === cur.length) { wait = 2200; del = true; }
+    else if (del && ci === 0) { del = false; pi = (pi+1) % phrases.length; wait = 350; }
+    setTimeout(type, wait);
+}
+type();
+
+/* ========== INTERSECTION OBSERVER ========== */
+const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('vis');
+
+        // Skill bars
+        entry.target.querySelectorAll('.sbar-fill').forEach(b => {
+            setTimeout(() => { b.style.width = b.dataset.w + '%'; }, 200);
+        });
+
+        // Counters
+        entry.target.querySelectorAll('[data-target]').forEach(el => {
+            const target = +el.dataset.target;
+            let cur = 0;
+            const step = target / 80;
+            const t = setInterval(() => {
+                cur += step;
+                if (cur >= target) { el.textContent = target + '+'; clearInterval(t); }
+                else el.textContent = Math.floor(cur);
+            }, 20);
+        });
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// Timeline separate observer
+const tlIO = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+        if (entry.isIntersecting) setTimeout(() => entry.target.classList.add('vis'), i * 80);
+    });
+}, { threshold: 0.1 });
+document.querySelectorAll('.tl-item').forEach(el => tlIO.observe(el));
+
+// Skill cats observer
+const skillIO = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.querySelectorAll('.sbar-fill').forEach((b,i) => {
+            setTimeout(() => { b.style.width = b.dataset.w + '%'; }, 250 + i*80);
+        });
+    });
+}, { threshold: 0.3 });
+document.querySelectorAll('.skill-cat').forEach(el => skillIO.observe(el));
+
+/* ========== PROJECT FILTER ========== */
+document.querySelectorAll('.filt-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filt-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.f;
+        document.querySelectorAll('.proj-card').forEach(c => {
+            const match = f === 'all' || c.dataset.cat === f;
+            c.classList.toggle('hide', !match);
+        });
+    });
+});
+
+/* ========== LEAFLET MAP ========== */
+const map = L.map('proj-map', { center: [30.5, 69.3], zoom: 5 });
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap &copy; CARTO', subdomains: 'abcd', maxZoom: 19
+}).addTo(map);
+
+function mkIcon(col) {
+    return L.divIcon({
+        className: '',
+        html: `<div style="width:13px;height:13px;border-radius:50%;background:${col};border:2.5px solid #fff;box-shadow:0 0 8px ${col};"></div>`,
+        iconSize: [13,13], iconAnchor: [6,6]
+    });
+}
+
+const locs = [
+    { ll:[34.0151,71.5249], name:'Peshawar, KP', col:'#8B5CF6', projects:['Drone Mapping – University of Peshawar','Site Suitability – Waste/Dumping','Groundwater Analysis – Hayatabad','Water Canals – University of Peshawar','LULC Impact on Ecological Quality (Geodetector)','Urban Flooding & Sentiment Analysis (Karachi flows)'] },
+    { ll:[33.6007,73.0679], name:'Rawalpindi / Islamabad', col:'#10B981', projects:['Land Record Digitization – Rawalpindi','Project Coordinator – Metavystic Private Ltd.'] },
+    { ll:[35.8518,71.7897], name:'Chitral, KP', col:'#F59E0B', projects:['Flood Susceptibility & Risk Assessment','Check Dam Planning – Mulkhow','Climate Change & Snowmelt – HKH Region (Thesis)'] },
+    { ll:[34.3509,73.2514], name:'Balakot, KP', col:'#EF4444', projects:['Landslide & Debris Flow Assessment (UAV + RAMMS)','Socioeconomic Impact of Landslides – Field Survey'] },
+    { ll:[34.0147,71.9774], name:'Nowshera, KP', col:'#10B981', projects:['Soil Loss Prediction (kNN, XGBoost, Random Forest)','Post-Flood Recovery Survey 2022'] },
+    { ll:[34.1875,72.0210], name:'Mardan, KP', col:'#8B5CF6', projects:['LULC Impact on Land Surface Temperature'] },
+    { ll:[33.1167,70.1667], name:'Karak, KP', col:'#F59E0B', projects:['Crops Field Survey – Takht-e-Nasrati','Water Scarcity Survey – Banda Daud Shah'] },
+    { ll:[25.3744,68.3647], name:'Sindh & Makran Coast', col:'#EF4444', projects:['Flood Susceptibility (Random Forest)','Meteorological & Agricultural Drought Analysis'] },
+    { ll:[35.8987,74.3314], name:'Swat, KP', col:'#10B981', projects:['Flash Flood – Twitter (X) Sentiment Analysis'] },
+    { ll:[33.9939,71.3567], name:'Kunhar River Basin, KP', col:'#8B5CF6', projects:['Morphometric Erosion Analysis via SVM'] },
+    { ll:[33.7667,70.8167], name:'Kurram District, KP', col:'#10B981', projects:['Cadastral Maps Digitization'] },
+    { ll:[31.5497,74.3436], name:'Northern Punjab', col:'#F59E0B', projects:['Urban Heat Island (UHI) & Regional Heat Island (RHI) Assessment'] },
+    { ll:[24.8607,67.0011], name:'Karachi, Sindh', col:'#8B5CF6', projects:['Urban Flooding & Public Sentiment Analysis'] },
+    { ll:[29.0,116.0], name:'Poyang Lake, China', col:'#A78BFA', projects:['Ecological Risk Assessment'] },
+    { ll:[23.1291,113.2644], name:'Guangdong, China', col:'#A78BFA', projects:['Spatio-Temporal Carbon Sequestration Study'] },
+    { ll:[34.7617,113.6527], name:'Zhengzhou, China', col:'#A78BFA', projects:['Urban Heat Island via Machine Learning'] },
+    { ll:[15.87,100.99], name:'Thailand', col:'#34D399', projects:['Crop Yield Prediction using R'] },
+    { ll:[47.88,106.90], name:'Ulaanbaatar, Mongolia', col:'#34D399', projects:['Agricultural Farm Site Suitability Analysis'] },
+];
+
+locs.forEach(loc => {
+    const m = L.marker(loc.ll, { icon: mkIcon(loc.col) }).addTo(map);
+    m.bindPopup(`<div class="pop-title">${loc.name}</div><ul class="pop-list">${loc.projects.map(p=>`<li>${p}</li>`).join('')}</ul>`);
+});
+
+/* ========== CONTACT FORM ========== */
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    const btn = this.querySelector('button[type="submit"]');
+    const status = document.getElementById('form-status');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    btn.disabled = true;
+    setTimeout(() => {
+        btn.innerHTML = '<i class="fas fa-check"></i> Sent!';
+        btn.style.background = 'linear-gradient(135deg,#10B981,#059669)';
+        status.style.display = 'block';
+        setTimeout(() => {
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+            btn.style.background = '';
+            btn.disabled = false;
+            status.style.display = 'none';
+        }, 3500);
+    }, 1200);
+    // Remove this fake handler once you configure Formspree — the form will submit normally
+    e.preventDefault();
+});
+</script>
+</body>
+</html>
